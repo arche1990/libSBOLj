@@ -12,7 +12,7 @@ public interface PrimitiveDevice
      *
      * @return 0 or more <code>DnaComponent</code>[s] that are in this Device
      */
-    public java.util.Collection<DnaComponent> getComponents();
+    public java.util.List<DnaComponent> getComponents();
 
     /**
      * Defined DNA segment for engineering biological systems, which belongs to

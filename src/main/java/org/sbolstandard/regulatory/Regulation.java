@@ -2,6 +2,7 @@
  */
 package org.sbolstandard.regulatory;
 
+import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLNamedObject;
 import org.sbolstandard.core.SBOLRootObject;
 import org.sbolstandard.core.SequenceAnnotation;
@@ -25,6 +26,8 @@ import org.sbolstandard.core.SequenceAnnotation;
  * @generated
  */
 public interface Regulation extends SBOLNamedObject, SBOLRootObject {
+	
+	/***
 	void setRegulation(
 			SequenceAnnotation left, 
 			RegulationType type, 
@@ -32,4 +35,14 @@ public interface Regulation extends SBOLNamedObject, SBOLRootObject {
 	public SequenceAnnotation getLeftAnnotation();	
 	public RegulationType getRegulationType();	
 	public SequenceAnnotation getRightAnnotation();
+	***/
+
+	public void setRegulation(
+			DnaComponent left, 
+			RegulationType type, 
+			DnaComponent right);
+	public DnaComponent getLeftComponent();	
+	public RegulationType getRegulationType();	
+	public DnaComponent getRightComponent();
+
 } 

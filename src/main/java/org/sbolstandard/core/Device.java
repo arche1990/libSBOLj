@@ -1,6 +1,7 @@
 package org.sbolstandard.core;
 
-public interface Device extends SBOLNamedObject, SBOLRootObject  {
+public interface Device 
+	extends SBOLNamedObject, SBOLRootObject  {
     /**
      * Text which is for users to read and interpret what this Collection is.
      * (eg "Collecting parts which could be used to build honey production directly into

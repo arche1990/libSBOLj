@@ -97,11 +97,16 @@ public class ToggleSwitch {
 		// 1. Repressor1 represses Promoter1
 		Regulation regulation1 = RegulatoryFactory.createRegulation();
 		regulation1.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/regulation1"));
-		regulation1.setRegulation(saRepressor1, RegulationTypes.getRepressingRegulation(), saPromoter1);
+		
+		// with Sequence Annotations
+		//regulation1.setRegulation(saRepressor1, RegulationTypes.getRepressingRegulation(), saPromoter1);
+		
+		// with Dna Components
+		regulation1.setRegulation(repressor1, RegulationTypes.getRepressingRegulation(), promoter1);
 		
 		Regulation regulation2 = RegulatoryFactory.createRegulation();
 		regulation2.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/regulation2"));
-		regulation2.setRegulation(saRepressor2, RegulationTypes.getRepressingRegulation(), saPromoter2);
+		regulation2.setRegulation(repressor2, RegulationTypes.getRepressingRegulation(), promoter2);
 		
 		RegulatoryDevice regDev = RegulatoryFactory.createRegulatoryDevice();
 		regDev.getRegulations().add(regulation1);
@@ -120,9 +125,9 @@ public class ToggleSwitch {
 		sPigeon += "# Arcs"+NEWLINE;
 		
 		for(Regulation reg:regDev.getRegulations()) {
-			sPigeon += reg.getLeftAnnotation().getSubComponent().getName()+" "+
+			sPigeon += reg.getLeftComponent().getName()+" "+
 					toPigeonArc(reg.getRegulationType().getName())+" "+
-					reg.getRightAnnotation().getSubComponent().getName()+NEWLINE;
+					reg.getRightComponent().getName()+NEWLINE;
 		}
 
 		System.out.println(sPigeon);

@@ -62,9 +62,9 @@ public class AddRegulatoryInteractions {
 		RegulationType rep = RegulationTypes.getRepressingRegulation();
 		**/
 
-		Regulation reg01 = RegulatoryFactory.createRegulation();
-		reg01.setDescription("repressing regulation");
-		reg01.setRegulation(sa_left, rep, sa_right);
+		//Regulation reg01 = RegulatoryFactory.createRegulation();
+		//reg01.setDescription("repressing regulation");
+		//reg01.setRegulation(sa_left, rep, sa_right);
 		
 		// TODO: serialization of the regulatory interactions
 	}
