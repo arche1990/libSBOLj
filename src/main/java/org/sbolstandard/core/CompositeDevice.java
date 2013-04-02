@@ -3,7 +3,7 @@ package org.sbolstandard.core;
 import java.util.List;
 
 public interface CompositeDevice 
-	extends SBOLNamedObject, SBOLRootObject, Device  {
+	extends Device  {
 
 	List<Device> getDevices();
 	void addDevice(Device device);

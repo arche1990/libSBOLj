@@ -41,62 +41,10 @@ public class DeviceImpl
 		extends SBOLObjectImpl 
 		implements Device {
 	
-	@XmlElement(required = true)
-	protected String displayId;
-	protected String name;
-	protected String description;
-	
 	@XmlTransient
 	protected List<Element> any;   // ???
 	
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String getDisplayId() {
-		return displayId;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public void setDisplayId(String value) {
-		this.displayId = value;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public void setName(String value) {
-		this.name = value;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public void setDescription(String value) {
-		this.description = value;
-	}
-
+	
 	public List<Element> getAny() {
 		if (any == null) {
 			any = new ArrayList<Element>();

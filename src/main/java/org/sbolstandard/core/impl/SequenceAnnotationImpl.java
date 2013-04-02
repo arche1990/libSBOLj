@@ -44,7 +44,9 @@ import org.w3c.dom.Element;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SequenceAnnotation", propOrder = { "precedes", "bioStart", "bioEnd", "strand", "subComponent", "any" })
 @XmlRootElement
-public class SequenceAnnotationImpl extends SBOLObjectImpl implements SequenceAnnotation {
+public class SequenceAnnotationImpl 
+	extends SBOLObjectImpl 
+	implements SequenceAnnotation {
 
 	protected final List<PrecedeReference> precedes = new ArrayList<PrecedeReference>();
 	@XmlTransient

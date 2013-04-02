@@ -5,7 +5,7 @@ package org.sbolstandard.regulatory;
 import java.util.List;
 
 import org.sbolstandard.core.Device;
-import org.sbolstandard.core.SBOLNamedObject;
+import org.sbolstandard.core.SBOLNamed;
 import org.sbolstandard.core.SBOLRootObject;
 
 /**
@@ -26,7 +26,7 @@ import org.sbolstandard.core.SBOLRootObject;
  * @generated
  */
 public interface RegulatoryDevice 
-		extends SBOLNamedObject, Device  {
+		extends SBOLNamed, Device  {
 	/**
 	 * Returns the value of the '<em><b>Regulations</b></em>' containment reference list.
 	 * The list contents are of type {@link org.sbolstandard.regulatory.Regulation}.

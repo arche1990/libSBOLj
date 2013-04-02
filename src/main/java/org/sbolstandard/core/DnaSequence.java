@@ -26,7 +26,9 @@ package org.sbolstandard.core;
  * biology work. Both experimental work and theoretical sequence composition
  * research heavily depends on this information.
  */
-public interface DnaSequence extends SBOLRootObject {
+public interface DnaSequence 
+		extends SBOLRootObject {
+	
     /**
      * The sequence of DNA base pairs which are described.
      * @return a string representation of the DNA base-pair sequence

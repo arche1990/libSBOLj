@@ -3,7 +3,8 @@
 package org.sbolstandard.regulatory;
 
 import org.sbolstandard.core.DnaComponent;
-import org.sbolstandard.core.SBOLNamedObject;
+import org.sbolstandard.core.SBOLNamed;
+import org.sbolstandard.core.SBOLObject;
 import org.sbolstandard.core.SBOLRootObject;
 import org.sbolstandard.core.SequenceAnnotation;
 
@@ -25,7 +26,8 @@ import org.sbolstandard.core.SequenceAnnotation;
  * @model
  * @generated
  */
-public interface Regulation extends SBOLNamedObject, SBOLRootObject {
+public interface Regulation
+	extends SBOLObject {
 	
 	/***
 	void setRegulation(

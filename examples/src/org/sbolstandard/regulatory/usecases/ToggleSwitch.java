@@ -9,7 +9,9 @@ import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLFactory;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.util.SequenceOntology;
+import org.sbolstandard.regulatory.AsRegulations;
 import org.sbolstandard.regulatory.Regulation;
+import org.sbolstandard.regulatory.RegulationExtension;
 import org.sbolstandard.regulatory.RegulationTypes;
 import org.sbolstandard.regulatory.RegulatoryDevice;
 import org.sbolstandard.regulatory.RegulatoryFactory;
@@ -22,12 +24,65 @@ import org.sbolstandard.regulatory.RegulatoryFactory;
  */
 public class ToggleSwitch {
 
-	public static void main(String[] args) 
-			throws Exception {
+	public ToggleSwitch() {
+		
+		// 1. we create an DNA component
+		DnaComponent toggleSwitch = this.buildToggleSwitch();
+		
+		// 2. add regulations and visualize it
+		this.visualize(toggleSwitch, 
+				this.addRegulations(toggleSwitch));
+	}
 	
-		// first, we create an SBOL document
-		SBOLDocument toggleSwitchDoc = SBOLFactory.createDocument();
+	private AsRegulations addRegulations(DnaComponent toggleSwitch) {
 
+		AsRegulations asReg = RegulationExtension.getInstance().extend(toggleSwitch);
+
+		// REGULATORY INTERACTIONS
+		// 1. Repressor1 represses Promoter1
+		Regulation regulation1 = RegulatoryFactory.createRegulation();
+		regulation1.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/regulation1"));
+		
+		// with Sequence Annotations
+		//regulation1.setRegulation(saRepressor1, RegulationTypes.getRepressingRegulation(), saPromoter1);
+		
+		// with Dna Components
+		regulation1.setRegulation(
+				toggleSwitch.getAnnotations().get(3).getSubComponent(),        // repressor1 
+				RegulationTypes.getRepressingRegulation(),   				   // represses
+				toggleSwitch.getAnnotations().get(1).getSubComponent());       // promoter1
+		asReg.getRegulations().add(regulation1);
+		
+		Regulation regulation2 = RegulatoryFactory.createRegulation();
+		regulation2.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/regulation2"));
+		regulation2.setRegulation(
+				toggleSwitch.getAnnotations().get(0).getSubComponent(),        // repressor2 
+				RegulationTypes.getRepressingRegulation(),   				   // represses
+				toggleSwitch.getAnnotations().get(2).getSubComponent());       // promoter2
+		asReg.getRegulations().add(regulation2);
+		
+		return asReg;
+	}
+	
+	public void visualize(DnaComponent toggleSwitch, AsRegulations regs) {
+
+		// Visualization of the Toggle Switch and its regulatory interactions
+		String NEWLINE = System.getProperty("line.separator");
+		String sPigeon = PigeonGenerator.toPigeon(toggleSwitch);
+		sPigeon += "# Arcs"+NEWLINE;
+		
+		for(Regulation reg : regs.getRegulations()) {
+			sPigeon += reg.getLeftComponent().getName()+" "+
+					toPigeonArc(reg.getRegulationType().getName())+" "+
+					reg.getRightComponent().getName()+NEWLINE;
+		}
+
+		WeyekinPoster.setPigeonText(sPigeon);
+		WeyekinPoster.postMyBird();
+	}
+	
+	private DnaComponent buildToggleSwitch() {
+		
 		// then, we create a toggle switch DNA component
 		// toggle-switch ::= repressor + promoter + promoter + repressor + reporter
 
@@ -88,52 +143,13 @@ public class ToggleSwitch {
 		saReporter.setSubComponent(reporter);
 		toggleSwitch.getAnnotations().add(saReporter);
 		
-		// add the toggle switch DNA component to the document
-		toggleSwitchDoc.addContent(toggleSwitch);
-				
-
-		// REGULATORY INTERACTIONS
-		
-		// 1. Repressor1 represses Promoter1
-		Regulation regulation1 = RegulatoryFactory.createRegulation();
-		regulation1.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/regulation1"));
-		
-		// with Sequence Annotations
-		//regulation1.setRegulation(saRepressor1, RegulationTypes.getRepressingRegulation(), saPromoter1);
-		
-		// with Dna Components
-		regulation1.setRegulation(repressor1, RegulationTypes.getRepressingRegulation(), promoter1);
-		
-		Regulation regulation2 = RegulatoryFactory.createRegulation();
-		regulation2.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/regulation2"));
-		regulation2.setRegulation(repressor2, RegulationTypes.getRepressingRegulation(), promoter2);
-		
-		RegulatoryDevice regDev = RegulatoryFactory.createRegulatoryDevice();
-		regDev.getRegulations().add(regulation1);
-		regDev.getRegulations().add(regulation2);
-		
-		// add the regulations to the toggle switch SBOL document
-		//toggleSwitchDoc.addContent(regDev);
-		
-		// Serialization -- TODO
-		//SBOLFactory.write(toggleSwitchDoc, 
-		//		new FileOutputStream("./examples/data/toggle-switch.xml"));				
-
-		// Visualization of the Toggle Switch and its regulatory interactions
-		String NEWLINE = System.getProperty("line.separator");
-		String sPigeon = PigeonGenerator.toPigeon(toggleSwitch);
-		sPigeon += "# Arcs"+NEWLINE;
-		
-		for(Regulation reg:regDev.getRegulations()) {
-			sPigeon += reg.getLeftComponent().getName()+" "+
-					toPigeonArc(reg.getRegulationType().getName())+" "+
-					reg.getRightComponent().getName()+NEWLINE;
-		}
-
-		System.out.println(sPigeon);
-
-		WeyekinPoster.setPigeonText(sPigeon);
-		WeyekinPoster.postMyBird();
+		return toggleSwitch;
+	}
+	
+	public static void main(String[] args) 
+			throws Exception {
+	
+		new ToggleSwitch();
 	}
 	
 	private static String toPigeonArc(String sSBOLRegulation) {

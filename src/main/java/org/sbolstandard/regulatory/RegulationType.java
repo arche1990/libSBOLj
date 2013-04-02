@@ -2,7 +2,7 @@
  */
 package org.sbolstandard.regulatory;
 
-import org.sbolstandard.core.SBOLNamedObject;
+import org.sbolstandard.core.SBOLNamed;
 import org.sbolstandard.core.SBOLRootObject;
 
 /**
@@ -16,6 +16,6 @@ import org.sbolstandard.core.SBOLRootObject;
  * @generated
  */
 public interface RegulationType 
-	extends SBOLNamedObject, SBOLRootObject  {
+	extends SBOLNamed, SBOLRootObject  {
 	
 } 

@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.sbolstandard.core.Collection;
+import org.sbolstandard.core.Device;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLVisitor;
 import org.w3c.dom.Element;
@@ -37,12 +38,11 @@ import org.w3c.dom.Element;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Collection", propOrder = { "displayId", "name", "description", "components", "any" })
-public class CollectionImpl extends SBOLObjectImpl implements Collection {
 
-	@XmlElement(required = true)
-	protected String displayId;
-	protected String name;
-	protected String description;
+public class CollectionImpl 
+	extends SBOLObjectImpl 
+	implements Collection {
+
 	@XmlElement(name = "component")
 	protected final List<DnaComponentWrapper> components = new ArrayList<DnaComponentWrapper>();
 	@XmlTransient
@@ -51,47 +51,6 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
 	@XmlAnyElement
 	protected List<Element> any;
 
-    /**
-     * {@inheritDoc}
-     */
-	public String getDisplayId() {
-		return displayId;
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	public void setDisplayId(String value) {
-		this.displayId = value;
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	public String getName() {
-		return name;
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	public void setName(String value) {
-		this.name = value;
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	public String getDescription() {
-		return description;
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	public void setDescription(String value) {
-		this.description = value;
-	}
 
     /**
      * {@inheritDoc}

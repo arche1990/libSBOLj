@@ -16,6 +16,18 @@ public class PigeonGenerator {
 
 	private static final String NEWLINE = System.getProperty("line.separator");
 
+	public static String toPigeon(Device d) {
+		
+		if(null != d) {
+			if(d instanceof CompositeDevice) {
+				return toPigeon((CompositeDevice)d);
+			} else if(d instanceof PrimitiveDevice) {
+				return toPigeon((PrimitiveDevice)d);
+			}
+		}
+		
+		return null;
+	}
 	public static String toPigeon(CompositeDevice cd) {
 		StringBuilder sPigeon = new StringBuilder();
 		
@@ -102,7 +114,8 @@ public class PigeonGenerator {
 			return "p";
 		} else if(SequenceOntology.CDS.equals(s)) {
 			return "c";
-		} else if(SequenceOntology.PRIMER_BINDING_SITE.equals(s)) {
+		} else if(SequenceOntology.PRIMER_BINDING_SITE.equals(s) ||
+				SequenceOntology.FIVE_PRIME_UTR.equals(s)) {
 			return "r";
 		} else if(SequenceOntology.TERMINATOR.equals(s)) {
 			return "t";

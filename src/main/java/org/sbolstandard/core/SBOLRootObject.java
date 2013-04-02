@@ -21,5 +21,6 @@ package org.sbolstandard.core;
  * 
  * @author Evren Sirin
  */
-public interface SBOLRootObject extends SBOLObject {
+public interface SBOLRootObject 
+	extends SBOLObject {
 }

@@ -23,7 +23,9 @@ import java.net.URI;
  * 
  * @author Evren Sirin
  */
-public interface SBOLObject extends SBOLVisitable {
+public interface SBOLObject 
+	extends SBOLNamed, SBOLIdentified, SBOLDescribed, SBOLVisitable {
+	
 	/**
 	 * Returns the identifier for this object.
 	 */

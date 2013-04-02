@@ -37,9 +37,13 @@ import org.w3c.dom.Element;
 	"uri",			
     "nucleotides"
 })
-public class DnaSequenceImpl extends SBOLObjectImpl implements DnaSequence {
+public class DnaSequenceImpl 
+	extends SBOLObjectImpl 
+	implements DnaSequence {
+	
     @XmlElement(required = true)
     protected String nucleotides;
+    
     @XmlTransient
     protected List<Element> any;
 

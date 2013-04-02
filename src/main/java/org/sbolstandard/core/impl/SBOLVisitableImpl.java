@@ -27,7 +27,9 @@ import org.sbolstandard.core.util.SBOLPrettyWriter;
  * @author Evren Sirin
  */
 @XmlTransient
-public abstract class SBOLVisitableImpl implements SBOLVisitable {
+public abstract class SBOLVisitableImpl 
+	implements SBOLVisitable {
+	
 	@XmlTransient
 	private static final SBOLPrettyWriter WRITER = new SBOLPrettyWriter();
 

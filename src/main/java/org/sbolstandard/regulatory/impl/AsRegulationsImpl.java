@@ -1,6 +1,6 @@
 package org.sbolstandard.regulatory.impl;
 
-import org.sbolstandard.core.Device;
+import org.sbolstandard.core.SBOLObject;
 import org.sbolstandard.regulatory.AsRegulations;
 import org.sbolstandard.regulatory.Regulation;
 
@@ -12,15 +12,15 @@ import java.util.List;
  * @author Matthew Pocock
  */
 public class AsRegulationsImpl implements AsRegulations {
-    private final Device extended;
+    private final SBOLObject extended;
     private final List<Regulation> regulations;
 
-    public AsRegulationsImpl(Device extended, List<Regulation> regulations) {
+    public AsRegulationsImpl(SBOLObject extended, List<Regulation> regulations) {
         this.extended = extended;
         this.regulations = regulations;
     }
 
-    public Device getExtended() {
+    public SBOLObject getExtended() {
         return extended;
     }
 

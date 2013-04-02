@@ -39,16 +39,16 @@ import org.w3c.dom.Element;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DnaComponent", propOrder = { "types", "displayId", "name", "description", "dnaSequence", "annotations" })
-public class DnaComponentImpl extends SBOLObjectImpl implements DnaComponent {
+public class DnaComponentImpl 
+		extends SBOLObjectImpl 
+		implements DnaComponent {
+	
 	@XmlElement(name = "type", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 	protected final List<URIWrapper> types = new ArrayList<URIWrapper>();
 	@XmlTransient
 	protected final WrappedList<URI, URIWrapper> wrappedTypes = new WrappedList<URI, URIWrapper>(URIWrapper.class,
 	                types);
-	@XmlElement(required = true)
-	protected String displayId;
-	protected String name;
-	protected String description;
+
 	protected DnaSequenceWrapper dnaSequence;
 	@XmlElement(name = "annotation")
 	protected final List<SequenceAnnotationWrapper> annotations = new ArrayList<SequenceAnnotationWrapper>();
@@ -82,53 +82,6 @@ public class DnaComponentImpl extends SBOLObjectImpl implements DnaComponent {
 		getTypes().remove(type);
 	}
 
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String getDisplayId() {
-		return displayId;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public void setDisplayId(String value) {
-		this.displayId = value;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public void setName(String value) {
-		this.name = value;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-	@Override
-	public void setDescription(String value) {
-		this.description = value;
-	}
 
 	/**
      * {@inheritDoc}
