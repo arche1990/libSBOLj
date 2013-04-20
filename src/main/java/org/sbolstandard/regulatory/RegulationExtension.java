@@ -1,21 +1,18 @@
 package org.sbolstandard.regulatory;
 
-import org.sbolstandard.core.Device;
-import org.sbolstandard.core.SBOLObject;
-import org.sbolstandard.core.extension.ExtendedAs;
+import org.sbolstandard.core.SBOLCoreObject;
 import org.sbolstandard.core.extension.ExtensionProvider;
 import org.sbolstandard.regulatory.impl.AsRegulationsImpl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Regulations associated with a Device.
+ * Regulations associated with an SBOL Core object.
  *
  * @author Matthew Pocock
  */
 public class RegulationExtension 
-		implements ExtensionProvider<SBOLObject> {
+		implements ExtensionProvider<SBOLCoreObject> {
     // get an instance of this extension, implemented using a private Holder class to solve thread-safety and lazy
     // issues
     public static RegulationExtension getInstance() {
@@ -28,7 +25,7 @@ public class RegulationExtension
     }
 
     @Override
-    public AsRegulations extend(final SBOLObject obj) {
+    public AsRegulations extend(final SBOLCoreObject obj) {
         // todo: replace stub with something that tracks regulations associated with the device
         return new AsRegulationsImpl(obj, new ArrayList<Regulation>());
     }

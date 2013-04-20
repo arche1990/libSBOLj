@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.sbolstandard.core.Device;
 import org.sbolstandard.core.SBOLNamed;
-import org.sbolstandard.core.SBOLRootObject;
+import org.sbolstandard.core.SBOLCoreObject;
 
 /**
  * <!-- begin-user-doc -->

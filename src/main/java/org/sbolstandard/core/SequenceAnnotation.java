@@ -30,7 +30,7 @@ import java.util.List;
  * 5' to 3' and the <code>-</code> strand is 3' to 5'.
  */
 public interface SequenceAnnotation 
-		extends SBOLRootObject {
+		extends SBOLCoreObject {
     
 	public List<SequenceAnnotation> getPrecedes();
     public void addPrecede(SequenceAnnotation precede);

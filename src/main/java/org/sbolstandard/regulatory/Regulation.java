@@ -5,7 +5,7 @@ package org.sbolstandard.regulatory;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLNamed;
 import org.sbolstandard.core.SBOLObject;
-import org.sbolstandard.core.SBOLRootObject;
+import org.sbolstandard.core.SBOLCoreObject;
 import org.sbolstandard.core.SequenceAnnotation;
 
 /**
@@ -40,11 +40,11 @@ public interface Regulation
 	***/
 
 	public void setRegulation(
-			DnaComponent left, 
+			SBOLObject left, 
 			RegulationType type, 
-			DnaComponent right);
-	public DnaComponent getLeftComponent();	
+			SBOLObject right);
+	public SBOLObject getLeft();	
 	public RegulationType getRegulationType();	
-	public DnaComponent getRightComponent();
+	public SBOLObject getRight();
 
 } 

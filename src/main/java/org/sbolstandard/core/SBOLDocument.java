@@ -31,15 +31,15 @@ public interface SBOLDocument extends SBOLVisitable {
 	 * will not be included in the results of this function. To get all the objects contained in a document you can use
 	 * the {@link SBOLObjectCollector} function.
 	 */
-	public List<SBOLRootObject> getContents();
+	public List<SBOLCoreObject> getContents();
 
 	/**
 	 * Adds a new top level object to the document. Only top-level objects need to be added explicitly to a document.
 	 */
-	public void addContent(SBOLRootObject obj);
+	public void addContent(SBOLCoreObject obj);
 
 	/**
 	 * Removes a top level object from the document.
 	 */
-	public void removeContent(SBOLRootObject obj);
+	public void removeContent(SBOLCoreObject obj);
 }

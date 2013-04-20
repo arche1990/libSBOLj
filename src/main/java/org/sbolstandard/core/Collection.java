@@ -30,7 +30,7 @@ package org.sbolstandard.core;
  */
 
 public interface Collection 
-	extends SBOLRootObject {
+	extends SBOLCoreObject {
 
     /**
      * Elements that are intended as engineering components in synthetic biology.

@@ -47,15 +47,15 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         @XmlElement(name = "DnaComponent", type = DnaComponentImpl.class),
         @XmlElement(name = "DnaSequence", type = DnaSequenceImpl.class)
     })
-    protected List<SBOLRootObject> rootObjects;
+    protected List<SBOLCoreObject> rootObjects;
 
     /**
      * {@inheritDoc}
      */
 	@Override
-    public List<SBOLRootObject> getContents() {
+    public List<SBOLCoreObject> getContents() {
         if (rootObjects == null) {
-            rootObjects = new ArrayList<SBOLRootObject>();
+            rootObjects = new ArrayList<SBOLCoreObject>();
         }
         return this.rootObjects;
     }
@@ -64,7 +64,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
      * {@inheritDoc}
      */
 	@Override
-	public void addContent(SBOLRootObject obj) {
+	public void addContent(SBOLCoreObject obj) {
 		if (obj == null) {
 			throw new NullPointerException();
 		}
@@ -76,7 +76,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
      * {@inheritDoc}
      */
 	@Override
-	public void removeContent(SBOLRootObject obj) {
+	public void removeContent(SBOLCoreObject obj) {
 		if (obj == null) {
 			throw new NullPointerException();
 		}

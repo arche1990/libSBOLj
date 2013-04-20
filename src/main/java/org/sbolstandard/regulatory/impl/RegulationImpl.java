@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.sbolstandard.core.DnaComponent;
+import org.sbolstandard.core.SBOLObject;
 import org.sbolstandard.core.SBOLVisitor;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.impl.SBOLObjectImpl;
@@ -26,12 +27,9 @@ public class RegulationImpl
 	protected String name;
 	protected String description;
 	
-	//protected SequenceAnnotation leftAnnotation;
-	//protected SequenceAnnotation rightAnnotation;
 	protected RegulationType regulationType;
-
-	protected DnaComponent left;
-	protected DnaComponent right;
+	protected SBOLObject left;
+	protected SBOLObject right;
 
 	@Override
 	public String getDescription() {
@@ -70,15 +68,14 @@ public class RegulationImpl
 	}
 
 	@Override
-	public void setRegulation(DnaComponent left, RegulationType type,
-			DnaComponent right) {
+	public void setRegulation(SBOLObject left, RegulationType type, SBOLObject right) {
 		this.left = left;
 		this.regulationType = type;
 		this.right = right;
 	}
 
 	@Override
-	public DnaComponent getLeftComponent() {
+	public SBOLObject getLeft() {
 		return this.left;
 	}
 
@@ -88,7 +85,7 @@ public class RegulationImpl
 	}
 
 	@Override
-	public DnaComponent getRightComponent() {
+	public SBOLObject getRight() {
 		return this.right;
 	}
 

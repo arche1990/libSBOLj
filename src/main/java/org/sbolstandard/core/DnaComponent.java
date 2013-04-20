@@ -29,7 +29,7 @@ import java.util.List;
  */
 
 public interface DnaComponent 
-	extends SBOLRootObject {
+	extends SBOLCoreObject {
 
 	/**
      * Positions and directions of <code>SequenceFeature</code>[s] that describe

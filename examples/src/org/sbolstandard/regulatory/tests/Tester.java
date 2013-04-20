@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cidarlab.pigeon.PigeonGenerator;
+import org.cidarlab.pigeon.Pigeon;
 import org.cidarlab.pigeon.WeyekinPoster;
 import org.sbolstandard.core.CompositeDevice;
 import org.sbolstandard.core.Device;
@@ -67,12 +67,6 @@ public class Tester {
 			
 			lst.add(reg);			
 		}
-		
-		String sPigeon = PigeonGenerator.toPigeon(dc);
-		sPigeon += PigeonGenerator.toPigeonArcs(lst);		
-
-		WeyekinPoster.setPigeonText(sPigeon.toString());
-		WeyekinPoster.postMyBird();
 	}
 	
 	
@@ -115,13 +109,6 @@ public class Tester {
 			
 			lst.add(reg);			
 		}
-		
-		String sPigeon = PigeonGenerator.toPigeon(pd);
-		sPigeon += PigeonGenerator.toPigeonArcs(lst);		
-		//System.out.println(sPigeon);
-
-		WeyekinPoster.setPigeonText(sPigeon.toString());
-		WeyekinPoster.postMyBird();
 	}
 	
 	// t3 constructs a COMPOSITE DEVICE 
@@ -169,13 +156,6 @@ public class Tester {
 			
 			lst.add(reg);
 		}
-		
-		// print the CD
-		String sPigeon = PigeonGenerator.toPigeon(cd);
-		sPigeon += PigeonGenerator.toPigeonArcs(lst);		
-
-		WeyekinPoster.setPigeonText(sPigeon.toString());
-		WeyekinPoster.postMyBird();
 	}
 	
 

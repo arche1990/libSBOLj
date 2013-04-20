@@ -27,7 +27,7 @@ package org.sbolstandard.core;
  * research heavily depends on this information.
  */
 public interface DnaSequence 
-		extends SBOLRootObject {
+		extends SBOLCoreObject {
 	
     /**
      * The sequence of DNA base pairs which are described.

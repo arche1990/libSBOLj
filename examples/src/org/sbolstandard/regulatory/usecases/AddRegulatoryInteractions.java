@@ -7,7 +7,7 @@ import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLFactory;
-import org.sbolstandard.core.SBOLRootObject;
+import org.sbolstandard.core.SBOLCoreObject;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.regulatory.Regulation;
 import org.sbolstandard.regulatory.RegulationType;

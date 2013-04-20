@@ -1,5 +1,6 @@
 package org.sbolstandard.regulatory;
 
+import org.sbolstandard.core.SBOLCoreObject;
 import org.sbolstandard.core.SBOLObject;
 import org.sbolstandard.core.extension.ExtendedAs;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author Matthew Pocock
  */
 public interface AsRegulations 
-		extends ExtendedAs<SBOLObject> {
+		extends ExtendedAs<SBOLCoreObject> {
 	
     /**
    	 * Returns the value of the '<em><b>Regulations</b></em>' containment reference list.
@@ -27,4 +28,5 @@ public interface AsRegulations
    	 */
    	List<Regulation> getRegulations();
 
+    SBOLCoreObject getExtended();
 }

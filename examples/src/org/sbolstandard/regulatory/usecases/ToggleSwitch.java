@@ -2,7 +2,7 @@ package org.sbolstandard.regulatory.usecases;
 
 import java.net.URI;
 
-import org.cidarlab.pigeon.PigeonGenerator;
+import org.cidarlab.pigeon.Pigeon;
 import org.cidarlab.pigeon.WeyekinPoster;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLDocument;
@@ -29,9 +29,10 @@ public class ToggleSwitch {
 		// 1. we create an DNA component
 		DnaComponent toggleSwitch = this.buildToggleSwitch();
 		
+		AsRegulations regulations = addRegulations(toggleSwitch);
+		
 		// 2. add regulations and visualize it
-		this.visualize(toggleSwitch, 
-				this.addRegulations(toggleSwitch));
+		Pigeon.draw(Pigeon.toPigeon(regulations));
 	}
 	
 	private AsRegulations addRegulations(DnaComponent toggleSwitch) {
@@ -62,23 +63,6 @@ public class ToggleSwitch {
 		asReg.getRegulations().add(regulation2);
 		
 		return asReg;
-	}
-	
-	public void visualize(DnaComponent toggleSwitch, AsRegulations regs) {
-
-		// Visualization of the Toggle Switch and its regulatory interactions
-		String NEWLINE = System.getProperty("line.separator");
-		String sPigeon = PigeonGenerator.toPigeon(toggleSwitch);
-		sPigeon += "# Arcs"+NEWLINE;
-		
-		for(Regulation reg : regs.getRegulations()) {
-			sPigeon += reg.getLeftComponent().getName()+" "+
-					toPigeonArc(reg.getRegulationType().getName())+" "+
-					reg.getRightComponent().getName()+NEWLINE;
-		}
-
-		WeyekinPoster.setPigeonText(sPigeon);
-		WeyekinPoster.postMyBird();
 	}
 	
 	private DnaComponent buildToggleSwitch() {
@@ -146,12 +130,7 @@ public class ToggleSwitch {
 		return toggleSwitch;
 	}
 	
-	public static void main(String[] args) 
-			throws Exception {
-	
-		new ToggleSwitch();
-	}
-	
+	/**
 	private static String toPigeonArc(String sSBOLRegulation) {
 		if("REPRESSION".equals(sSBOLRegulation)) {
 			return "rep";
@@ -160,5 +139,11 @@ public class ToggleSwitch {
 		}
 		return (String)null;
 	}
-
+	**/
+	
+	public static void main(String[] args) 
+			throws Exception {	
+		new ToggleSwitch();
+	}
+	
 }

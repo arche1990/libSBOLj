@@ -21,7 +21,7 @@ import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.DnaSequence;
 import org.sbolstandard.core.SBOLDocument;
-import org.sbolstandard.core.SBOLRootObject;
+import org.sbolstandard.core.SBOLCoreObject;
 import org.sbolstandard.core.SBOLVisitable;
 import org.sbolstandard.core.SequenceAnnotation;
 
@@ -136,15 +136,15 @@ public class SBOLDeepEquality {
 				return;
 			}
 			
-			java.util.Collection<SBOLRootObject> components1 = doc1.getContents();
-			java.util.Collection<SBOLRootObject> components2 = doc2.getContents();
+			java.util.Collection<SBOLCoreObject> components1 = doc1.getContents();
+			java.util.Collection<SBOLCoreObject> components2 = doc2.getContents();
 			try {
                 assertEquals(components1.size(), components2.size());
             } catch (NotEqualException e) {
                 throw new NotEqualException("Components not the same size for\n" + doc1 + "\n" + doc2);
             }
-			Iterator<SBOLRootObject> iter1 = components1.iterator();
-			Iterator<SBOLRootObject> iter2 = components2.iterator();
+			Iterator<SBOLCoreObject> iter1 = components1.iterator();
+			Iterator<SBOLCoreObject> iter2 = components2.iterator();
 			while (iter1.hasNext()) {
 				assertEqual(iter1.next(), iter2.next());
 			}

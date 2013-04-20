@@ -8,16 +8,47 @@ import org.sbolstandard.core.CompositeDevice;
 import org.sbolstandard.core.Device;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.PrimitiveDevice;
+import org.sbolstandard.core.SBOLObject;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.util.SequenceOntology;
+import org.sbolstandard.regulatory.AsRegulations;
 import org.sbolstandard.regulatory.Regulation;
 
-public class PigeonGenerator {
+public class Pigeon {
 
 	private static final String NEWLINE = System.getProperty("line.separator");
 
-	public static String toPigeon(Device d) {
+	public static String toPigeon(AsRegulations regulations) {
+		StringBuilder sb = new StringBuilder();
 		
+		sb.append(Pigeon.toPigeon(regulations.getExtended()))
+			.append(toPigeonArcs(regulations.getRegulations()));
+
+		System.out.println(sb.toString());
+		
+		return sb.toString();
+	}
+	
+	public static String toPigeon(SBOLObject obj) {
+		StringBuilder sb = new StringBuilder();
+		if(null != obj) {
+			if(obj instanceof Device) {
+				sb.append(toPigeon((Device)obj));
+			} else if(obj instanceof DnaComponent) {
+				sb.append(toPigeon((DnaComponent)obj));
+			}
+		}
+		sb.append("# Arcs").append(NEWLINE);
+		return sb.toString();
+	}
+	
+	
+	public static void draw(String sPigeon) {
+		WeyekinPoster.setPigeonText(sPigeon);
+		WeyekinPoster.postMyBird();
+	}
+		
+	private static String toPigeon(Device d) {
 		if(null != d) {
 			if(d instanceof CompositeDevice) {
 				return toPigeon((CompositeDevice)d);
@@ -28,48 +59,48 @@ public class PigeonGenerator {
 		
 		return null;
 	}
-	public static String toPigeon(CompositeDevice cd) {
+	
+	private static String toPigeon(CompositeDevice cd) {
 		StringBuilder sPigeon = new StringBuilder();
+
+		int i=0; 
 		
 		for(Device d:cd.getDevices()) {
-
 			if(d instanceof CompositeDevice) {
-				sPigeon.append(toPigeon((CompositeDevice)cd));
+				sPigeon.append(toPigeon((CompositeDevice)cd)).append(NEWLINE);				
 			} else if(d instanceof PrimitiveDevice) {
 				sPigeon.append(toPigeon((PrimitiveDevice)d));
 			}
-			sPigeon.append(".").append(NEWLINE);
+			
+			if(++i < cd.getDevices().size()) {
+				sPigeon.append(".").append(NEWLINE);
+				sPigeon.append(".").append(NEWLINE);
+			}
 		}
-		
 		return sPigeon.toString();
 	}
 	
 	
-	public static String toPigeon(PrimitiveDevice pd) {
+	private static String toPigeon(PrimitiveDevice pd) {
 		StringBuilder sPigeon = new StringBuilder();
 		
 		for(DnaComponent dc:pd.getComponents()) {
-			sPigeon.append(PigeonGenerator.toPigeon(dc))
-				.append(NEWLINE);
+			sPigeon.append(Pigeon.toPigeon(dc)).append(NEWLINE);
 		}
-
-
 		
 		return sPigeon.toString();
 	}
 	
-	public static String toPigeonArcs(List<Regulation> lst) {
+	private static String toPigeonArcs(List<Regulation> lst) {
 		StringBuilder sPigeon = new StringBuilder();
-
-		sPigeon.append("# Arcs").append(NEWLINE);
 
 		if(null != lst) {
 			for(Regulation reg:lst) {
-				sPigeon.append(reg.getLeftComponent().getName())
+				sPigeon.append(reg.getLeft().getName())
 					.append(" ")
 					.append(toPigeonArc(reg.getRegulationType().getName()))
 					.append(" ")
-					.append(reg.getRightComponent().getName())
+					.append(reg.getRight().getName())
 					.append(NEWLINE);
 			}
 		}
@@ -86,8 +117,7 @@ public class PigeonGenerator {
 		return (String)null;
 	}
 		
-	public static String toPigeon(DnaComponent component) {
-
+	private static String toPigeon(DnaComponent component) {
 		if(null == component) {
 			return "";
 		}
@@ -101,11 +131,14 @@ public class PigeonGenerator {
 			Iterator<SequenceAnnotation> it = component.getAnnotations().iterator();
 			while(it.hasNext()) {
 				SequenceAnnotation sa = it.next();
-				sb.append(toPigeon(sa.getSubComponent())).append(NEWLINE);
-			}
-			
+				sb.append(toPigeon(sa.getSubComponent()));
+				
+				if(it.hasNext()) {
+					sb.append(NEWLINE);
+				}
+			}			
 		}
-		
+
 		return sb.toString();
 	}
 	

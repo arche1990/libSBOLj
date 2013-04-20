@@ -19,7 +19,7 @@ import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.DnaSequence;
 import org.sbolstandard.core.SBOLDocument;
-import org.sbolstandard.core.SBOLRootObject;
+import org.sbolstandard.core.SBOLCoreObject;
 import org.sbolstandard.core.SBOLVisitor;
 import org.sbolstandard.core.SequenceAnnotation;
 
@@ -36,7 +36,7 @@ public class SBOLBaseVisitor<T extends Throwable> implements SBOLVisitor<T> {
 	 * {@inheritDoc}
 	 */
 	public void visit(SBOLDocument doc) throws T {
-		for (SBOLRootObject rootObj : doc.getContents()) {
+		for (SBOLCoreObject rootObj : doc.getContents()) {
 			rootObj.accept(this);
 		}
 	}
