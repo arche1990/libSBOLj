@@ -60,6 +60,7 @@
         <module>core</module>
         <module>rdf-pickler</module>
         <module>examples</module>
+        <module>system</module>
     </modules>
 
     <build>
