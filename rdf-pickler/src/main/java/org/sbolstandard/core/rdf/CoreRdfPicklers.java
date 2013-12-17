@@ -4,12 +4,16 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Resource;
+
 import org.sbolstandard.core.*;
 
 import static org.sbolstandard.core.rdf.RdfPicklers.*;
 
 import java.beans.IntrospectionException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Properties;
@@ -37,7 +41,40 @@ public class CoreRdfPicklers {
   public static CoreRdfPicklers instance() throws IOException, IntrospectionException {
     if(instance == null) {
       Properties props = new Properties();
-      props.load(RdfPicklers.class.getResourceAsStream("SbolRdfPicklers.properties"));
+      
+//      //InputStream stream=RdfPicklers.class.getResourceAsStream("/home/ubuntu/work/libSBOLj/rdf-pickler/src/main/resources/org.sbolstandard.core.rdf/SbolRdfPicklers.properties");
+//      
+//      //InputStream stream=RdfPicklers.class.getResourceAsStream("resources/org.sbolstandard.core.rdf/SbolRdfPicklers.properties");
+//
+//      File file=new File ("/home/ubuntu/work/libSBOLj/rdf-pickler/src/main/resources/org.sbolstandard.core.rdf/SbolRdfPicklers.properties");
+//      FileInputStream fis=new FileInputStream(file);
+//      if (fis==null)
+//      {
+//    	  System.out.print("Null stream!");
+//      }
+//      else
+//      {
+//    	  System.out.print("Stream is not null");
+//    	  /*int content;
+//			while ((content = fis.read()) != -1) {
+//				// convert to char and display it
+//				System.out.print((char) content);
+//			}*/
+//      }
+//      props.load(fis);
+//      for(String key : props.stringPropertyNames()) {
+//    	  String value = props.getProperty(key);
+//    	  System.out.println(key + " => " + value);
+//    	}
+//      
+      
+      props.load(RdfPicklers.class.getResourceAsStream("/org.sbolstandard.core.rdf/SbolRdfPicklers.properties")); 
+      for(String key : props.stringPropertyNames()) {
+    	  String value = props.getProperty(key);
+    	  System.out.println(key + " => " + value);
+    	}
+    	  
+      //props.load(RdfPicklers.class.getResourceAsStream("orgSbolRdfPicklers.properties"));
       instance = new CoreRdfPicklers(props);
     }
 
@@ -47,6 +84,7 @@ public class CoreRdfPicklers {
   private static String getProperty(Properties props, String propName) {
     String prop = (String) props.get(propName);
     if(prop == null) throw new IllegalArgumentException("Missing property: " + propName);
+    
     return prop;
   }
 
@@ -244,7 +282,7 @@ public class CoreRdfPicklers {
   }
 
   private RdfEntityPickler<SBOLNamedObject> mkSbolNamedObjectPickler(Properties props) throws IntrospectionException {
-    Properties cProps = propertiesFor(props, "NamedObject");
+    Properties cProps = propertiesFor(props, "SBOLNamedObject");
 
     RdfPropertyPickler<SBOLNamedObject, String> name =
             value(identity, property(getProperty(cProps, "name")));
@@ -297,13 +335,13 @@ public class CoreRdfPicklers {
     Properties cProps = propertiesFor(props, "DnaComponent");
 
     RdfPropertyPickler<DnaComponent, DnaSequence> sequence =
-            object(identity, property(getProperty(cProps, "sequence")), identity);
+            object(identity, property(getProperty(cProps, "dnaSequence")), identity);
     RdfPropertyPickler<DnaComponent, SequenceAnnotation> annotation =
             object(identity, property(getProperty(cProps, "annotation")), identity);
 
     return all(
             type(dnaComponent, identity),
-            byProperty(DnaComponent.class, "sequence", nullable(sequence)),
+            byProperty(DnaComponent.class, "dnaSequence", nullable(sequence)),
             byProperty(DnaComponent.class, "annotations", notNull(collection(all(annotation, walkTo(sequenceAnnotationPickler))))),
             sbolNamedObjectPickler);
   }
@@ -316,7 +354,7 @@ public class CoreRdfPicklers {
 
     return all(
             type(collection, identity),
-            byProperty(Collection.class, "component", collection(notNull(component))),
+            byProperty(Collection.class, "components", collection(notNull(component))),
             sbolNamedObjectPickler);
   }
 
@@ -324,7 +362,7 @@ public class CoreRdfPicklers {
     RdfPropertyPickler<Collection, DnaComponent> component =
             walkTo(dnaComponentPickler);
 
-    return byProperty(Collection.class, "component", collection(notNull(component)));
+    return byProperty(Collection.class, "components", collection(notNull(component)));
   }
 
   private RdfEntityPickler<DnaComponent> mkNestedDnaComponentsPickler() throws IntrospectionException {
