@@ -13,3 +13,9 @@ javadocs
 /sand
 /nbproject/
 /javadoc
+.project
+.settings
+bin
+**/.project
+**/.settings
+**/bin
