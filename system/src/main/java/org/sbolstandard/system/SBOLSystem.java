@@ -4,6 +4,7 @@ package org.sbolstandard.system;
 
 import org.sbolstandard.core.SBOLNamedObject;
 import org.sbolstandard.core.SBOLRootObject;
+import java.util.List;
 
 /**
  * The SBOL data model's DnaComponent.
@@ -30,5 +31,26 @@ public interface SBOLSystem extends SBOLNamedObject, SBOLRootObject {
     public String getName();
 
     public void setName(String name);
+    
+    //Models - will be in the Modelling extension
+    //	Model(uri)
+    public Model getModel();
+    
+    public void setModel(Model model);
+    
+    //Devices - will be in the core
+    //	Device(uri,dnaComponents)
+    public List<Device> getDevices();
 
-    }
+    public void addDevice(Device device);
+    
+	public void removeDevice(Device device);
+    
+    //Contexts - will be in the Context extension
+    // Context(uri)
+    public List<Context> getContexts();
+
+    public void addContext(Context context);
+    
+	public void removeContext(Context context);
+}

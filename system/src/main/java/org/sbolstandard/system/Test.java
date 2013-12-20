@@ -12,6 +12,7 @@ import org.sbolstandard.core.SBOLFactory;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.StrandType;
 import org.sbolstandard.core.rdf.CoreRdfPicklers;
+import org.sbolstandard.system.impl.ModelImpl;
 import org.sbolstandard.system.impl.SBOLSystemImpl;
 import org.sbolstandard.system.impl.SystemRdfPickler;
 
@@ -38,7 +39,11 @@ public class Test {
 		system.setURI(new URI("http://www.fake.org"));
 		system.setName("sys name");
 		system.setDescription("sys desc");
-		system.setDisplayId("sys_id");		
+		system.setDisplayId("sys_id");
+		Model model = new ModelImpl();
+		model.setURI(new URI("http://www.fake.org"));
+		model.setDisplayId("model_id");
+		system.setModel(model);
 		document.addContent(system);
 				
 		SystemRdfPickler.instance().getIO().write(document, writer);

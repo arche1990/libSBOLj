@@ -27,6 +27,8 @@ public class WithType<E> implements RdfEntityPickler<E> {
 
   @Override
   public void pickle(Model model, E e) {
-    model.add(fromResourcer.asResource(model, e), RDF.type, type);
+    model.add(fromResourcer.asResource(model, e), RDF.type, model.createResource(type));
+    //model.add(fromResourcer.asResource(model, e), RDF.type, type);
+    
   }
 }

@@ -20,6 +20,9 @@ import org.sbolstandard.core.impl.SBOLObjectImpl;
 import org.sbolstandard.core.impl.WrappedList;
 import org.sbolstandard.core.impl.WrappedValue;
 import org.sbolstandard.core.impl.XmlAdapters.URIAdapter;
+import org.sbolstandard.system.Context;
+import org.sbolstandard.system.Device;
+import org.sbolstandard.system.Model;
 import org.sbolstandard.system.SBOLSystem;
 import org.w3c.dom.Element;
 
@@ -35,6 +38,9 @@ public class SBOLSystemImpl extends SBOLObjectImpl implements SBOLSystem {
 	protected String displayId;
 	protected String name;
 	protected String description;
+	protected Model model;
+	protected List<Device> devices = new ArrayList<Device>();
+	protected List<Context> contexts = new ArrayList<Context>();
 	
 	/**
      * {@inheritDoc}
@@ -92,14 +98,14 @@ public class SBOLSystemImpl extends SBOLObjectImpl implements SBOLSystem {
 	@Override
 	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) {
 		//GMGM Confifm this with Matt : 
-		SBOLSystemVisitor systemVisitor=(SBOLSystemVisitor) visitor;
-		
+		if (visitor instanceof SBOLSystemVisitor) {
 			try {
-				systemVisitor.visit(this);
+				((SBOLSystemVisitor<T>) visitor).visit(this);
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 		
 	}
 
@@ -120,5 +126,48 @@ public class SBOLSystemImpl extends SBOLObjectImpl implements SBOLSystem {
 		public void setValue(URI value) {
 			super.setValue(value);
 		}
+	}
+
+
+
+
+	@Override
+	public Model getModel() {
+		return model;
+	}
+
+	@Override
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
+	@Override
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	@Override
+	public void addDevice(Device device) {
+		devices.add(device);
+	}
+
+	@Override
+	public void removeDevice(Device device) {
+		devices.remove(device);
+	}
+
+	@Override
+	public List<Context> getContexts() {
+		return contexts;
+	}
+
+	@Override
+	public void addContext(Context context) {
+		contexts.add(context);
+	}
+
+	@Override
+	public void removeContext(Context context) {
+		contexts.remove(context);
 	}
 }

@@ -6,6 +6,7 @@ import static org.sbolstandard.core.rdf.RdfPicklers.identity;
 import static org.sbolstandard.core.rdf.RdfPicklers.notNull;
 import static org.sbolstandard.core.rdf.RdfPicklers.nullable;
 import static org.sbolstandard.core.rdf.RdfPicklers.property;
+import static org.sbolstandard.core.rdf.RdfPicklers.type;
 import static org.sbolstandard.core.rdf.RdfPicklers.value;
 
 import java.beans.IntrospectionException;
@@ -27,6 +28,8 @@ import org.sbolstandard.core.rdf.RdfEntityPickler;
 import org.sbolstandard.core.rdf.RdfPicklers;
 import org.sbolstandard.core.rdf.RdfPropertyPickler;
 import org.sbolstandard.core.rdf.CoreRdfPicklers.IO;
+import org.sbolstandard.system.Context;
+import org.sbolstandard.system.Device;
 import org.sbolstandard.system.SBOLSystem;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -95,7 +98,7 @@ public class SystemRdfPickler implements RdfEntityPickler<SBOLDocument> {
 
 		        @Override
 		        public void visit(DnaComponent component) throws RuntimeException {
-		         
+		        	sbolNamedObjectPickler.pickle(model, component);
 		        }
 
 		        @Override
@@ -112,6 +115,21 @@ public class SystemRdfPickler implements RdfEntityPickler<SBOLDocument> {
 		        public void visit(SBOLSystem system) throws RuntimeException {
 		        	sbolNamedObjectPickler.pickle(model, system);   
 		        }
+
+				@Override
+				public void visit(Context context) throws RuntimeException {
+					sbolNamedObjectPickler.pickle(model, context); 
+				}
+
+				@Override
+				public void visit(org.sbolstandard.system.Model m) throws RuntimeException {
+					sbolNamedObjectPickler.pickle(model, m);
+				}
+				
+				@Override
+				public void visit(Device device) throws RuntimeException {
+					sbolNamedObjectPickler.pickle(model, device);
+				}
 
 		      });
 		    }	    				 
@@ -134,9 +152,14 @@ public class SystemRdfPickler implements RdfEntityPickler<SBOLDocument> {
 		            value(identity, property(getProperty(cProps, "description")));
 
 		    return RdfPicklers.all(
+		            //type("SystemGM", identity),
 		            byProperty(SBOLNamedObject.class, "name", notNull(name)),
 		            byProperty(SBOLNamedObject.class, "displayId", nullable(displayId)),
-		            byProperty(SBOLNamedObject.class, "description", nullable(description)));
+		            byProperty(SBOLNamedObject.class, "description", nullable(description)),
+		            type(baseURI +  "System", identity)
+
+		            
+		    		);
 		  }
 	 
 	 private static Properties propertiesFor(Properties properties, String pfx) {
@@ -171,7 +194,9 @@ public class SystemRdfPickler implements RdfEntityPickler<SBOLDocument> {
 		  }
 
 	  public IO getIO() {
+		    //String format = "RDF/XML-ABBREV";
 		    String format = "RDF/XML-ABBREV";
+		    
 		    return getIO(format, getDnaComponent());
 		  }
 
@@ -179,6 +204,7 @@ public class SystemRdfPickler implements RdfEntityPickler<SBOLDocument> {
 		    return new IO() {
 		      public void write(Model model, Writer rdfOut) throws IOException
 		      {
+		    	  System.out.println("Format:------------" + format);
 		        RDFWriter writer = model.getWriter(format);
 		        writer.setProperty("tab","3");
 
@@ -194,7 +220,9 @@ public class SystemRdfPickler implements RdfEntityPickler<SBOLDocument> {
 		      @Override
 		      public void write(SBOLDocument document, Writer rdfOut) throws IOException {
 		        Model model = ModelFactory.createDefaultModel();
-		        model.setNsPrefix("sbol", getBaseUri());
+		        //model.setNsPrefix("sbol", getBaseUri());
+		        model.setNsPrefix("", getBaseUri());
+		        
 		        pickle(model, document);
 		        write(model, rdfOut);
 		      }

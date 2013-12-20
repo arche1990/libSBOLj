@@ -378,14 +378,15 @@ public class CoreRdfPicklers {
 
   public IO getIO() {
     String format = "RDF/XML-ABBREV";
+    
     return getIO(format, getDnaComponent(), getDnaSequence(), getCollection());
   }
 
   public IO getIO(final String format, final String ... topLevel) {
     return new IO() {
       public void write(Model model, Writer rdfOut) throws IOException
-      {
-        RDFWriter writer = model.getWriter(format);
+      {        
+    	  RDFWriter writer = model.getWriter(format);
         writer.setProperty("tab","3");
 
         Resource[] topLevelResources = new Resource[topLevel.length];

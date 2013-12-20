@@ -8,12 +8,20 @@ import org.sbolstandard.core.SBOLVisitable;
 import org.sbolstandard.core.SBOLVisitor;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.impl.SBOLVisitableImpl;
+import org.sbolstandard.system.Context;
+import org.sbolstandard.system.Device;
+import org.sbolstandard.system.Model;
 import org.sbolstandard.system.SBOLSystem;
 
 public interface SBOLSystemVisitor<T extends Throwable> extends SBOLVisitor<T> {	 
-//public interface SBOLSystemVisitorextends SBOLVisitor<Throwable> {	 
+//public interface SBOLSystemVisitorextends SBOLVisitor<Throwable> {
+	public void visit(SBOLSystem system) throws T;
+     
+    public void visit(Context context) throws T;
+
+	public void visit(Model model) throws T;
 	
-     public void visit(SBOLSystem system) throws T;        	
+	public void visit(Device device) throws T;
 }
 
 /*
