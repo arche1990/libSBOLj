@@ -65,6 +65,11 @@ public class Test {
 		
 		Device device=new DeviceImpl();
 		device.setURI(new URI("http://www.fake.org.device1"));
+		device.setName("device name");
+		device.setDisplayId("device id");
+		device.setDescription("device description");
+		
+		
 		device.addDnaComponent(GetDoublePromoter());
 		system.addDevice(device);
 		
@@ -96,10 +101,10 @@ SBOLDocument document=SBOLFactory.createDocument();
 				DnaComponent dnaComponent2 = GetDnaComponent(baseURL + "/part/doubleprom1", "doubleprom1", "Double Promoter 1", "A double promoter example", "http://purl.org/obo/owl/SO#SO_0000167","aaaaaa");
 				DnaComponent prom1 = GetDnaComponent(baseURL + "/part/prom1", "prom1", "Promoter 1", "A promoter ", "http://purl.org/obo/owl/SO#SO_0000167","aaa");
 				
-				SequenceAnnotation annotation1=GetSequenceAnnotation(baseURL + "/part/doubleprom1_1_3", 1, 3, StrandType.POSITIVE, prom1);
-				SequenceAnnotation annotation2=GetSequenceAnnotation(baseURL + "/part/doubleprom1_4_6", 4, 6, StrandType.POSITIVE, prom1);
-				dnaComponent2.addAnnotation(annotation1);
-				dnaComponent2.addAnnotation(annotation2);
+				//SequenceAnnotation annotation1=GetSequenceAnnotation(baseURL + "/part/doubleprom1_1_3", 1, 3, StrandType.POSITIVE, prom1);
+				//SequenceAnnotation annotation2=GetSequenceAnnotation(baseURL + "/part/doubleprom1_4_6", 4, 6, StrandType.POSITIVE, prom1);
+				//dnaComponent2.addAnnotation(annotation1);
+				//dnaComponent2.addAnnotation(annotation2);
 			return dnaComponent2;
 	}
 	private static DnaComponent GetDnaComponent(String uri, String displayId, String name,String description, String type,String nucleotideSequence) throws Exception
@@ -110,10 +115,10 @@ SBOLDocument document=SBOLFactory.createDocument();
 		dnaComponent.setDisplayId(displayId);
 		dnaComponent.setURI(new URI(uri));
 		dnaComponent.addType(new URI(type));
-		/*DnaSequence sequence=SBOLFactory.createDnaSequence();		
+		DnaSequence sequence=SBOLFactory.createDnaSequence();		
 		sequence.setNucleotides(nucleotideSequence);		
 		sequence.setURI(new URI(uri + "/NA"));			
-		dnaComponent.setDnaSequence(sequence);*/
+		dnaComponent.setDnaSequence(sequence);
 		return dnaComponent;
 	}
 	
