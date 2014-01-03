@@ -230,8 +230,8 @@ public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickle
 	 private RdfEntityPickler<org.sbolstandard.system.Model> mkModelPickler(Properties props) throws IntrospectionException {
 		    
 		    RdfPropertyPickler<org.sbolstandard.system.Model, String> name=value(identity, property("http://sbols.org/v1#name"));
-		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> source=value(identity, property("http://sbols.org/v1#source"));			   
-		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> language=value(identity, property("http://sbols.org/v1#language"));			   
+		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> source=object(identity, property("http://sbols.org/v1#source"),RdfPicklers.uri);			   
+		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> language=object(identity, property("http://sbols.org/v1#language"),RdfPicklers.uri);			   
 		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> framework=object(identity, property("http://sbols.org/v1#framework"),RdfPicklers.uri);			   
 
 		    return all(
