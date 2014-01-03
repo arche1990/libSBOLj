@@ -34,9 +34,11 @@ public interface SBOLSystem extends SBOLNamedObject, SBOLRootObject {
     
     //Models - will be in the Modelling extension
     //	Model(uri)
-    public Model getModel();
+    public List<Model> getModels();
     
-    public void setModel(Model model);
+    public void AddModel(Model model);
+    
+    public void removeModel(Model model);
     
     //Devices - will be in the core
     //	Device(uri,dnaComponents)

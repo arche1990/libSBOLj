@@ -1,5 +1,7 @@
 package org.sbolstandard.system.impl;
 
+import java.net.URI;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -66,6 +68,44 @@ public class ModelImpl extends SBOLObjectImpl implements Model {
 		this.description = value;
 	}
 
+	private URI source;
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public URI getSource() {
+		return source;
+	}
+
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public void setSource(URI source) {
+		this.source = source;
+	}
+	
+	private URI language;
+	public URI getLanguage()
+	{
+		return language;
+	}
+	public void setLanguage(URI language)
+	{
+		this.language=language;
+	}
+
+	private URI framework;
+	public URI getFramework()
+	{
+		return framework;
+	}
+	public void setFramework(URI framework)
+	{
+		this.framework=framework;
+	}
+	
+	
 	@Override
 	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
 		if (visitor instanceof SBOLSystemVisitor) {

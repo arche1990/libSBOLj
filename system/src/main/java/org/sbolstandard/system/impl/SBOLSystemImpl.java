@@ -17,8 +17,10 @@ import org.sbolstandard.core.DnaSequence;
 import org.sbolstandard.core.SBOLVisitor;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.impl.SBOLObjectImpl;
+import org.sbolstandard.core.impl.SequenceAnnotationImpl;
 import org.sbolstandard.core.impl.WrappedList;
 import org.sbolstandard.core.impl.WrappedValue;
+import org.sbolstandard.core.impl.DnaComponentImpl.SequenceAnnotationWrapper;
 import org.sbolstandard.core.impl.XmlAdapters.URIAdapter;
 import org.sbolstandard.system.Context;
 import org.sbolstandard.system.Device;
@@ -38,9 +40,18 @@ public class SBOLSystemImpl extends SBOLObjectImpl implements SBOLSystem {
 	protected String displayId;
 	protected String name;
 	protected String description;
-	protected Model model;
+	
+	@XmlElement(name = "model")
+	protected List<Model> models =new ArrayList<Model>();
+	
 	protected List<Device> devices = new ArrayList<Device>();
+	@XmlElement(name = "context")
 	protected List<Context> contexts = new ArrayList<Context>();
+	/* Confirm this with Matt
+	 * @XmlTransient
+	protected final WrappedList<ContextImpl, ContextWrapper> wrappedAnnotations = new WrappedList<ContextImpl, ContextWrapper>(
+	                ContextWrapper.class, contexts);
+	*/
 	
 	/**
      * {@inheritDoc}
@@ -127,18 +138,60 @@ public class SBOLSystemImpl extends SBOLObjectImpl implements SBOLSystem {
 			super.setValue(value);
 		}
 	}
+	
+	@XmlTransient
+	protected List<Element> any;
+	
+//	@Override
+//	public List<URI> getTypes() {
+//		return this.wrappedTypes;
+//	}
+	
+//	/**
+//     * {@inheritDoc}
+//     */
+//	@Override
+//	public void addType(URI type) {
+//		getTypes().add(type);
+//	}
+//
+//	/**
+//     * {@inheritDoc}
+//     */
+//	@Override
+//	public void removeType(URI type) {
+//		getTypes().remove(type);
+//	}
 
-
+//
+//	@XmlAccessorType(XmlAccessType.NONE)
+//	public static class ContextWrapper extends WrappedValue<ContextImpl> {
+//		@XmlElement(name = "Context")
+//		@Override
+//		public ContextImpl getValue() {
+//			return super.getValue();
+//		}
+//
+//		@Override
+//		public void setValue(ContextImpl value) {
+//			super.setValue(value);
+//		}
+//	}
 
 
 	@Override
-	public Model getModel() {
-		return model;
+	public List<Model> getModels() {
+		return models;
 	}
 
 	@Override
-	public void setModel(Model model) {
-		this.model = model;
+	public void AddModel(Model model) {
+		this.models.add(model);
+	}
+	
+	@Override
+	public void removeModel(Model model) {
+		models.remove(model);
 	}
 
 	@Override

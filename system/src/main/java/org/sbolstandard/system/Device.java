@@ -14,4 +14,9 @@ public interface Device extends SBOLNamedObject, SBOLRootObject {
     public void addDnaComponent(DnaComponent component);
     
 	public void removeDnaComponent(DnaComponent component);
+	
+	  public String getName();
+
+	    public void setName(String name);
+	    
 }

@@ -112,10 +112,10 @@ public class CoreRdfPicklers {
   private final String collection;
 
   // picklers
-  private final RdfEntityPickler<SBOLNamedObject> sbolNamedObjectPickler;
-  private final RdfEntityPickler<DnaSequence> dnaSequencePickler;
-  private final RdfEntityPickler<DnaComponent> dnaComponentPickler;
-  private final RdfEntityPickler<SequenceAnnotation> sequenceAnnotationPickler;
+  protected final RdfEntityPickler<SBOLNamedObject> sbolNamedObjectPickler;
+  protected final RdfEntityPickler<DnaSequence> dnaSequencePickler;
+  protected final RdfEntityPickler<DnaComponent> dnaComponentPickler;
+  protected final RdfEntityPickler<SequenceAnnotation> sequenceAnnotationPickler;
   private final RdfEntityPickler<Collection> collectionPickler;
 
   // exotic picklers
@@ -281,7 +281,7 @@ public class CoreRdfPicklers {
     return collectionComponentsPickler;
   }
 
-  private RdfEntityPickler<SBOLNamedObject> mkSbolNamedObjectPickler(Properties props) throws IntrospectionException {
+  protected RdfEntityPickler<SBOLNamedObject> mkSbolNamedObjectPickler(Properties props) throws IntrospectionException {
     Properties cProps = propertiesFor(props, "SBOLNamedObject");
 
     RdfPropertyPickler<SBOLNamedObject, String> name =
@@ -292,12 +292,12 @@ public class CoreRdfPicklers {
             value(identity, property(getProperty(cProps, "description")));
 
     return all(
-            byProperty(SBOLNamedObject.class, "name", notNull(name)),
-            byProperty(SBOLNamedObject.class, "displayId", nullable(displayId)),
-            byProperty(SBOLNamedObject.class, "description", nullable(description)));
+            byProperty(SBOLNamedObject.class, "description", nullable(description)),
+    		byProperty(SBOLNamedObject.class, "name", notNull(name)),
+            byProperty(SBOLNamedObject.class, "displayId", nullable(displayId)));
   }
 
-  private RdfEntityPickler<DnaSequence> mkDnaSequencePickler(Properties props) throws IntrospectionException {
+  protected RdfEntityPickler<DnaSequence> mkDnaSequencePickler(Properties props) throws IntrospectionException {
     Properties cProps = propertiesFor(props, "DnaSequence");
 
     RdfPropertyPickler<DnaSequence, String> nucleotides =
@@ -308,7 +308,7 @@ public class CoreRdfPicklers {
             byProperty(DnaSequence.class, "nucleotides", notNull(nucleotides)));
   }
 
-  private RdfEntityPickler<SequenceAnnotation> mkSequenceAnnotationPickler(Properties props) throws IntrospectionException {
+  protected RdfEntityPickler<SequenceAnnotation> mkSequenceAnnotationPickler(Properties props) throws IntrospectionException {
     Properties cProps = propertiesFor(props, "SequenceAnnotation");
 
     RdfPropertyPickler<SequenceAnnotation, Integer> bioStart =
@@ -331,7 +331,7 @@ public class CoreRdfPicklers {
             byProperty(SequenceAnnotation.class, "precedes", notNull(collection(precedes))));
   }
 
-  private RdfEntityPickler<DnaComponent> mkDnaComponentPickler(Properties props) throws IntrospectionException {
+  protected RdfEntityPickler<DnaComponent> mkDnaComponentPickler(Properties props) throws IntrospectionException {
     Properties cProps = propertiesFor(props, "DnaComponent");
 
     RdfPropertyPickler<DnaComponent, DnaSequence> sequence =
