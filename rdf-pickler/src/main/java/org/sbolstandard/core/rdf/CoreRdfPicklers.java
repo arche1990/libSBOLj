@@ -40,55 +40,22 @@ public class CoreRdfPicklers {
    */
   public static CoreRdfPicklers instance() throws IOException, IntrospectionException {
     if(instance == null) {
-      Properties props = new Properties();
-      
-//      //InputStream stream=RdfPicklers.class.getResourceAsStream("/home/ubuntu/work/libSBOLj/rdf-pickler/src/main/resources/org.sbolstandard.core.rdf/SbolRdfPicklers.properties");
-//      
-//      //InputStream stream=RdfPicklers.class.getResourceAsStream("resources/org.sbolstandard.core.rdf/SbolRdfPicklers.properties");
-//
-//      File file=new File ("/home/ubuntu/work/libSBOLj/rdf-pickler/src/main/resources/org.sbolstandard.core.rdf/SbolRdfPicklers.properties");
-//      FileInputStream fis=new FileInputStream(file);
-//      if (fis==null)
-//      {
-//    	  System.out.print("Null stream!");
-//      }
-//      else
-//      {
-//    	  System.out.print("Stream is not null");
-//    	  /*int content;
-//			while ((content = fis.read()) != -1) {
-//				// convert to char and display it
-//				System.out.print((char) content);
-//			}*/
-//      }
-//      props.load(fis);
-//      for(String key : props.stringPropertyNames()) {
-//    	  String value = props.getProperty(key);
-//    	  System.out.println(key + " => " + value);
-//    	}
-//      
-      
+      Properties props = new Properties();              
       props.load(RdfPicklers.class.getResourceAsStream("/org.sbolstandard.core.rdf/SbolRdfPicklers.properties")); 
-      for(String key : props.stringPropertyNames()) {
-    	  String value = props.getProperty(key);
-    	  System.out.println(key + " => " + value);
-    	}
-    	  
-      //props.load(RdfPicklers.class.getResourceAsStream("orgSbolRdfPicklers.properties"));
       instance = new CoreRdfPicklers(props);
     }
 
     return instance;
   }
 
-  private static String getProperty(Properties props, String propName) {
+  protected static String getProperty(Properties props, String propName) {
     String prop = (String) props.get(propName);
     if(prop == null) throw new IllegalArgumentException("Missing property: " + propName);
     
     return prop;
   }
 
-  private static Properties propertiesFor(Properties properties, String pfx) {
+  protected static Properties propertiesFor(Properties properties, String pfx) {
     Properties result = new Properties();
     String pfxDot = pfx + ".";
     int pfxDotLen = pfxDot.length();
@@ -103,13 +70,13 @@ public class CoreRdfPicklers {
     return result;
   }
 
-  private final String baseURI;
+  protected final String baseURI;
 
   // URIs for resources
-  private final String dnaSequence;
-  private final String sequenceAnnotation;
-  private final String dnaComponent;
-  private final String collection;
+  protected final String dnaSequence;
+  protected final String sequenceAnnotation;
+  protected final String dnaComponent;
+  protected final String collection;
 
   // picklers
   protected final RdfEntityPickler<SBOLNamedObject> sbolNamedObjectPickler;
@@ -145,7 +112,7 @@ public class CoreRdfPicklers {
     nestedDnaComponentsPickler = mkNestedDnaComponentsPickler();
   }
 
-  public void pickle(final Model model, SBOLDocument document) {
+  public void pickle(final Model model, SBOLDocument document) throws Exception {
     for(SBOLObject o : document.getContents()) {
       o.accept(new SBOLVisitor<RuntimeException>() {
         @Override
@@ -233,6 +200,10 @@ public class CoreRdfPicklers {
   public RdfEntityPickler<Collection> getCollectionPickler() {
     return collectionPickler;
   }
+  
+  public RdfEntityPickler<SBOLNamedObject> getNamedObjectPickler() {
+	    return sbolNamedObjectPickler;
+	  }
 
   /**
    * Get the pickler for DNA sequences.
@@ -372,17 +343,17 @@ public class CoreRdfPicklers {
   }
 
   public static interface IO {
-    public void write(SBOLDocument document, Writer rdfOut) throws IOException;
-    public void write(Model model, Writer rdfOut) throws IOException;
+    public void write(SBOLDocument document, Writer rdfOut) throws Exception;
+    public void write(Model model, Writer rdfOut) throws Exception;
   }
 
-  public IO getIO() {
+  public IO getIO() throws Exception{
     String format = "RDF/XML-ABBREV";
     
     return getIO(format, getDnaComponent(), getDnaSequence(), getCollection());
   }
 
-  public IO getIO(final String format, final String ... topLevel) {
+  public IO getIO(final String format, final String ... topLevel) throws Exception {
     return new IO() {
       public void write(Model model, Writer rdfOut) throws IOException
       {        
@@ -399,9 +370,9 @@ public class CoreRdfPicklers {
       }
 
       @Override
-      public void write(SBOLDocument document, Writer rdfOut) throws IOException {
+      public void write(SBOLDocument document, Writer rdfOut) throws Exception {
         Model model = ModelFactory.createDefaultModel();
-        model.setNsPrefix("sbol", getBaseUri());
+        model.setNsPrefix("", getBaseUri());
         pickle(model, document);
         write(model, rdfOut);
       }

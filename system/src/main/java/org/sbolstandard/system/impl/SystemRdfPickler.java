@@ -25,6 +25,7 @@ import org.sbolstandard.core.DnaSequence;
 import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLNamedObject;
 import org.sbolstandard.core.SBOLObject;
+import org.sbolstandard.core.SBOLRootObject;
 import org.sbolstandard.core.SBOLVisitor;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.StrandType;
@@ -42,13 +43,14 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickler<SBOLDocument> {
+public class SystemRdfPickler extends CoreRdfPicklers  {
 	  private static SystemRdfPickler instance = null;
 	  
 	  private final RdfEntityPickler<SBOLSystem> systemObjectPickler;
 	  private final RdfEntityPickler<Context> contextPickler;
 	  private final RdfEntityPickler<Device> devicePickler;
 	  private final RdfEntityPickler<org.sbolstandard.system.Model> modelPickler;
+	  private final RdfEntityPickler<SBOLRootObject> rootObjectPickler;
 	  
 	  	  
 	  public static SystemRdfPickler instance() throws IOException, IntrospectionException {
@@ -66,21 +68,26 @@ public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickle
 		    return instance;
 		  }
 
-	  public SystemRdfPickler(Properties props) throws IntrospectionException {
+	  public SystemRdfPickler(Properties props) throws IntrospectionException,IOException {
 		    super(props);
-		    
 		    devicePickler = mkDevicePickler(props); 		    
 		    contextPickler = mkContextPickler(props); 
 		    modelPickler=mkModelPickler(props);
 		    systemObjectPickler=mkSystemObjectPickler(props);		 
-		    
+		    rootObjectPickler=mkRootObjectPickler(props);
 		    
 		  }
 	  
-	 public void pickle(final Model model, SBOLDocument document) 
+	  private RdfEntityPickler<SBOLRootObject> mkRootObjectPickler(Properties props) throws IntrospectionException,IOException {
+			
+	  
+		  
+		  return null;
+	  }
+	 public void pickle(final Model model, SBOLDocument document)  throws Exception
 	 {
 		 for(SBOLObject o : document.getContents()) {
-		      o.accept(new SBOLSystemVisitor<RuntimeException>() {
+		      o.accept(new SBOLSystemVisitor<Exception>() {
 		        @Override
 		        public void visit(SBOLDocument doc) throws RuntimeException {
 		          // skip
@@ -92,8 +99,8 @@ public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickle
 		        }
 
 		        @Override
-		        public void visit(DnaComponent component) throws RuntimeException {
-		        	sbolNamedObjectPickler.pickle(model, component);
+		        public void visit(DnaComponent component) throws Exception {
+		        	 CoreRdfPicklers.instance().getNamedObjectPickler().pickle(model, component);
 		        }
 
 		        @Override
@@ -132,7 +139,7 @@ public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickle
 		    }	    				 
 	 }	 
 	  	 		 
-	 private RdfEntityPickler<SBOLSystem> mkSystemObjectPickler(Properties props) throws IntrospectionException {
+	 private RdfEntityPickler<SBOLSystem> mkSystemObjectPickler(Properties props) throws IntrospectionException,IOException {
 		 RdfPropertyPickler<SBOLSystem, org.sbolstandard.system.Model> model =  object(identity, property("http://sbols.org/v1#model"), identity);
 		 RdfPropertyPickler<SBOLSystem, Context> context =object(identity, property("http://sbols.org/v1#context"), identity);
 		 RdfPropertyPickler<SBOLSystem, Device> device=object(identity, property("http://sbols.org/v1#device"), identity);
@@ -141,31 +148,31 @@ public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickle
 				  byProperty(SBOLSystem.class, "models", notNull(collection(all(model, walkTo(modelPickler))))),				  
 				  byProperty(SBOLSystem.class, "contexts", notNull(collection(all(context, walkTo(contextPickler))))),
 				  byProperty(SBOLSystem.class, "devices", notNull(collection(all(device, walkTo(devicePickler))))),
-				  sbolNamedObjectPickler,
-				  type(baseURI +  "System", identity)
+				  CoreRdfPicklers.instance().getNamedObjectPickler(),
+				  type( CoreRdfPicklers.instance().getBaseUri() +  "System", identity)
 				  );	 	 
 	 }
 	 
-	 private RdfEntityPickler<Context> mkContextPickler(Properties props) throws IntrospectionException {
+	 private RdfEntityPickler<Context> mkContextPickler(Properties props) throws IntrospectionException,IOException {
 		   RdfPropertyPickler<Context, String> name=value(identity, property("http://sbols.org/v1#name"));		   
 		    return all(		    	  		    	    
-		    		type(baseURI +  "Context", identity),
-		            sbolNamedObjectPickler
+		    		type( CoreRdfPicklers.instance().getBaseUri()+  "Context", identity),
+		    		 CoreRdfPicklers.instance().getNamedObjectPickler()
 		            );		          
 		  }
 	 
-	 private RdfEntityPickler<Device> mkDevicePickler(Properties props) throws IntrospectionException {
+	 private RdfEntityPickler<Device> mkDevicePickler(Properties props) throws IntrospectionException,IOException {
 		   RdfPropertyPickler<Device, DnaComponent> component=object(identity, property("http://sbols.org/v1#component"), identity);			
 		    RdfPropertyPickler<Device, String> name=value(identity, property("http://sbols.org/v1#name"));
 
 		    return all(
-		            type(baseURI +  "Device", identity),
-		            byProperty(Device.class, "dnaComponents", notNull(collection(all(component, walkTo(dnaComponentPickler))))),
-		            sbolNamedObjectPickler		            
+		            type(CoreRdfPicklers.instance().getBaseUri() +  "Device", identity),
+		            byProperty(Device.class, "dnaComponents", notNull(collection(all(component, walkTo(CoreRdfPicklers.instance().getDnaComponentPickler()))))),
+		            CoreRdfPicklers.instance().getNamedObjectPickler()		            
 		            );		          
 		  }
 	 
-	 private RdfEntityPickler<org.sbolstandard.system.Model> mkModelPickler(Properties props) throws IntrospectionException {
+	 private RdfEntityPickler<org.sbolstandard.system.Model> mkModelPickler(Properties props) throws IntrospectionException,IOException {
 		    
 		    RdfPropertyPickler<org.sbolstandard.system.Model, String> name=value(identity, property("http://sbols.org/v1#name"));
 		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> source=object(identity, property("http://sbols.org/v1#source"),RdfPicklers.uri);			   
@@ -173,16 +180,16 @@ public class SystemRdfPickler extends CoreRdfPicklers implements RdfEntityPickle
 		    RdfPropertyPickler<org.sbolstandard.system.Model, URI> framework=object(identity, property("http://sbols.org/v1#framework"),RdfPicklers.uri);			   
 
 		    return all(
-		            type(baseURI +  "Model", identity),
+		            type(CoreRdfPicklers.instance().getBaseUri() +  "Model", identity),
 		            byProperty(org.sbolstandard.system.Model.class, "framework", nullable(framework)),
 		            byProperty(org.sbolstandard.system.Model.class, "language", nullable(language)),		            
 		            byProperty(org.sbolstandard.system.Model.class, "source", nullable(source)),		            
-		            sbolNamedObjectPickler		            
+		            CoreRdfPicklers.instance().getNamedObjectPickler()		            
 		            );		          
 		  }
 	 	 		 
-	  public IO getIO() {
+	  public IO getIO() throws Exception{
 		    String format = "RDF/XML-ABBREV";		    
-		    return getIO(format, dnaComponent, "http://sbols.org/v1#Context", "http://sbols.org/v1#Device","http://sbols.org/v1#Model");
+		    return SystemRdfPickler.instance().getIO(format, CoreRdfPicklers.instance().getDnaComponent(), "http://sbols.org/v1#Context", "http://sbols.org/v1#Device","http://sbols.org/v1#Model");
 		  }	 
 }
