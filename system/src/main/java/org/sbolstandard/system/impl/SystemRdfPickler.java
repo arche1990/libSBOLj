@@ -189,7 +189,9 @@ public class SystemRdfPickler extends CoreRdfPicklers  {
 		  }
 	 	 		 
 	  public IO getIO() throws Exception{
-		    String format = "RDF/XML-ABBREV";		    
+		    String format = "RDF/XML-ABBREV";
+		    //String format = "Turtle";
+		    
 		    return SystemRdfPickler.instance().getIO(format, CoreRdfPicklers.instance().getDnaComponent(), "http://sbols.org/v1#Context", "http://sbols.org/v1#Device","http://sbols.org/v1#Model");
 		  }	 
 }

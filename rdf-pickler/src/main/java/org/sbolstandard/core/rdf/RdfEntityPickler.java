@@ -17,4 +17,5 @@ public interface RdfEntityPickler<E> {
    */
   public void pickle(Model model, E e);
 
+ // public E unpickle(Model model, Map<URI, Object> referenced);
 }
